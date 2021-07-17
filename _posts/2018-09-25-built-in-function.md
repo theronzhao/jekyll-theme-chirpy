@@ -1,8 +1,8 @@
 ---
-layout: post
 title: python3内置函数
-Author: TheronZhao
-tags: Python
+date: 2018-09-25 22:16:07 +0800
+categories: [Python]
+tags: [Python]
 ---
 
 abs(number)  

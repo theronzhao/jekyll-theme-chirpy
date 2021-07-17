@@ -1,11 +1,9 @@
 ---
-layout: post
 title: itertools模块
-Author: TheronZhao
-tags: Python标准库
+date: 2018-05-21 20:08:47 +0800
+categories: [Python标准库]
+tags: [Python标准库]
 ---
-- zzz
-{:toc}
 # itertools模块
 
 itertools模块包含创建有效迭代器的函数，可以用各种方式对数据进行循环操作，此模块中的所有函数返回的迭代器都可以与for循环语句以及其他包含迭代器（如生成器和生成器表达式）的函数联合使用

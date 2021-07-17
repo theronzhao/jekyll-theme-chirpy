@@ -1,11 +1,9 @@
 ---
-layout: post
 title: sys模块
-Author: TheronZhao
-tags: Python标准库
+date: 2019-01-01 20:33:05 +0800
+categories: [Python标准库]
+tags: [Python标准库]
 ---
-- zzz
-{:toc}
 # OS模块
 
 该模块提供了一些方便使用操作系统相关功能的函数。

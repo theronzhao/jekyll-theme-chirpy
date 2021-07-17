@@ -1,8 +1,8 @@
 ---
-layout: post
 title: Linux常用命令
-Author: TheronZhao
-tags: Linux
+date: 2018-11-11 22:16:37 +0800
+categories: [Linux]
+tags: [Linux]
 ---
 
 | 通配符 | 含义                                                         |

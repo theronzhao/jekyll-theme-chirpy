@@ -1,8 +1,8 @@
 ---
-layout: post
 title: Markdown语法简介
-Author: Shengbin
-tags: 生产工具
+date: 2018-08-18 19:22:28 +0800
+categories: [生产工具]
+tags: [生产工具]
 ---
 
 本中文版Markdown语法简介来自博客 <https://blog.shengbin.me/posts/markdown-syntax>

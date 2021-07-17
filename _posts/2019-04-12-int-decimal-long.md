@@ -1,12 +1,9 @@
 ---
-layout: post
 title: 整数-小数-负数的存储
-Author: TheronZhao
-tags: 计算机科学
+date: 2019-04-12 18:13:00 +0800
+categories: [计算机科学]
+tags: [计算机科学]
 ---
-## 目录
-- zzz
-{:toc}
 ##  计算机中整数的存储  ##
 
 用几个字节来表示一个整数？  byte型1字节  short型2字节  int型4字节  long型8字节

@@ -1,11 +1,9 @@
 ---
-layout: post
 title: 进程·线程·协程
-Author: TheronZhao
-tags: 网络通信
+date: 2018-06-04 21:26:44 +0800
+categories: [网络通信]
+tags: [网络通信,计算机科学]
 ---
-- zzz
-{:toc}
 # 多任务编程
 
 多任务执行方式有两种方式：**并发**和**并行**

@@ -1,13 +1,9 @@
 ---
-layout: post
 title: 文件操作
-Author: TheronZhao
-tags: Python
-
+date: 2018-10-24 22:38:16 +0800
+categories: [Python]
+tags: [Python]
 ---
-
-- zzz
-{:toc}
 
 
 

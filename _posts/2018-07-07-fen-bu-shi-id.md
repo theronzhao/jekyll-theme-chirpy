@@ -1,9 +1,8 @@
 ---
-layout: post
 title: 分布式ID
-Author: TheronZhao
-tags: Web开发
-
+date: 2018-07-07 22:31:09 +0800
+categories: [Web开发]
+tags: [Web开发]
 ---
 
 ## UUID

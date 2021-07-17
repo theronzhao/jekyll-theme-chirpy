@@ -1,8 +1,8 @@
 ---
-layout: post
 title: 关于加密
-Author: TheronZhao
-tags: 计算机科学
+date: 2019-07-22 12:44:00 +0800
+categories: [计算机科学]
+tags: [计算机科学]
 ---
 
 ## 加密

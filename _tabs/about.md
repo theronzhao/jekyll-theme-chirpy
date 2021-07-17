@@ -5,4 +5,8 @@ order: 4
 ---
 
 
-> **Note**: Add Markdown syntax content to file `_tabs/about.md` and it will show up on this page.
+> **Note**: 作者很懒，什么也没说🤣🤣🤣
+
+<div align="left">
+<img src="/assets/img/about.jpg" width="200px" height="200px" alt="about me" />
+</div>

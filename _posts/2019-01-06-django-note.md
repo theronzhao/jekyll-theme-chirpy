@@ -1,11 +1,9 @@
 ---
-layout: post
 title: Django基础
-Author: TheronZhao
-tags: Web开发
+date: 2019-01-06 19:14:46 +0800
+categories: [Web开发]
+tags: [Web开发,Django]
 ---
-- zzz
-{:toc}
 Web框架的意义
 
 - 用于搭建web应用程序

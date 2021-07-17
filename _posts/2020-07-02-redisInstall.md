@@ -1,8 +1,8 @@
 ---
-layout: post
-title: Ubuntu16.04安装Redis
-Author: TheronZhao
-tags: 生产工具
+title: Ubuntu 16.04安装redis
+date: 2020-07-02 10:23:00 +0800
+categories: [生产工具]
+tags: [生产工具]
 ---
 ## 安装
 

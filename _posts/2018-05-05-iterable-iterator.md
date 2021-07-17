@@ -1,11 +1,9 @@
 ---
-layout: post
 title: 迭代器和生成器
-Author: TheronZhao
-tags: Python
+date: 2018-05-05 20:23:49 +0800
+categories: [Python]
+tags: [Python]
 ---
-- zzz
-{:toc}
 
 
 ## 迭代器

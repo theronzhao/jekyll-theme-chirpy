@@ -1,11 +1,9 @@
 ---
-layout: post
 title: Time,Datetime,Calendar模块
-Author: TheronZhao
-tags: Python标准库
+date: 2018-10-10 19:07:44 +0800
+categories: [Python标准库]
+tags: [Python标准库]
 ---
-- zzz
-{:toc}
 # datetime模块
 
 ## 一. datetime模块介绍

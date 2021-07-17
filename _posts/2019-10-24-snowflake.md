@@ -1,8 +1,8 @@
 ---
-layout: post
 title: 雪花算法的python实现与代码解读
-Author: TheronZhao
-tags: 数据结构与算法
+date: 2019-10-24 16:33:00 +0800
+categories: [数据结构与算法]
+tags: [Web开发,数据结构与算法]
 ---
 ## 雪花算法介绍
 

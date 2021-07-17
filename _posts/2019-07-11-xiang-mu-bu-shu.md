@@ -1,8 +1,8 @@
 ---
-layout: post
 title: gunicorn与uwsgi项目部署
-Author: TheronZhao
-tags: 项目部署
+date: 2019-07-11 15:21:00 +0800
+categories: [Web开发]
+tags: [Web开发,项目部署]
 ---
 
 ## gunicorn

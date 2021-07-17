@@ -1,11 +1,9 @@
 ---
-layout: post
 title: 字符编码
-Author: TheronZhao
-tags: 计算机科学
+date: 2019-05-07 16:44:00 +0800
+categories: [计算机科学]
+tags: [计算机科学]
 ---
-- zzz
-{:toc}
 ## 位、字节、字符的区别
 
 位（bit）：是计算机 内部数据 储存的最小单位，11001100是一个八位二进制数。

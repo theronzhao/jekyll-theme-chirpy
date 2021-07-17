@@ -1,12 +1,9 @@
 ---
-layout: post
 title: 内置数据类型常用方法
-Author: TheronZhao
-tags: Python
+date: 2018-07-29 20:06:11 +0800
+categories: [Python]
+tags: [Python]
 ---
-
-- zzz
-{:toc}
 
 
 ## 列表 List

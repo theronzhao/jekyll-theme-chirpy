@@ -1,8 +1,8 @@
 ---
-layout: post
 title: 元类
-Author: TheronZhao
-tags: Python
+date: 2018-03-09 18:57:32 +0800
+categories: [Python]
+tags: [Python]
 ---
 
 

@@ -1,11 +1,9 @@
 ---
-layout: post
 title: pickle模块
-Author: TheronZhao
-tags: Python标准库
+date: 2018-08-27 20:16:33 +0800
+categories: [Python标准库]
+tags: [Python标准库]
 ---
-- zzz
-{:toc}
 模块 pickle 实现了对一个 Python 对象结构的二进制序列化和反序列化。 "pickling" 是将 Python 对象及其所拥有的层次结构转化为一个字节流的过程，而 "unpickling" 是相反的操作，会将（来自一个 binary file 或者 bytes-like object 的）字节流转化回一个对象层次结构。
 
 
