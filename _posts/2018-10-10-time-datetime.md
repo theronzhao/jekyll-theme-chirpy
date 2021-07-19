@@ -1,7 +1,7 @@
 ---
 title: Time,Datetime,Calendar模块
 date: 2018-10-10 19:07:44 +0800
-categories: [Python标准库]
+categories: [Python,标准库]
 tags: [Python标准库]
 ---
 # datetime模块

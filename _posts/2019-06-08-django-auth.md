@@ -2,7 +2,7 @@
 title: Django身份认证系统
 date: 2019-06-08 21:34:55 +0800
 categories: [Django]
-tags: [Django, Web开发, Python]
+tags: [Django]
 ---
 
 # Django 中的身份认证

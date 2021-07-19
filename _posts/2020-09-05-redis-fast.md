@@ -2,7 +2,7 @@
 title: Redis为什么这么快
 date: 2020-09-05 13:57:32 +0800
 categories: [数据库, Redis]
-tags: [数据库, Redis]
+tags: [Redis]
 ---
 
 来源：https://mp.weixin.qq.com/s/BFtMacHdk1_ThbLP0vgVPg

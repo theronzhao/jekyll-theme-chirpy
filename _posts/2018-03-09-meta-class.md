@@ -1,8 +1,8 @@
 ---
 title: 元类
 date: 2018-03-09 18:57:32 +0800
-categories: [Python]
-tags: [Python]
+categories: [Python, Python基础]
+tags: [Python基础]
 ---
 
 

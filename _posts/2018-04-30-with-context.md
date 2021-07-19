@@ -1,8 +1,8 @@
 ---
 title: with语句和上下文管理器
 date: 2018-04-30 19:48:26 +0800
-categories: [Python]
-tags: [Python]
+categories: [Python,Python进阶]
+tags: [Python进阶]
 ---
 
 任何实现了 \_\_enter\_\_() 和 \_\_exit\_\_() 方法的对象都可称之为上下文管理器，上下文管理器对象可以使用 with 关键字。\_\_enter\_\_() 方法返回资源对象，这里就是你将要打开的那个文件对象，\_\_exit\_\_() 方法处理一些清除工作。

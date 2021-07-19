@@ -1,7 +1,7 @@
 ---
 title: itertools模块
 date: 2018-05-21 20:08:47 +0800
-categories: [Python标准库]
+categories: [Python,标准库]
 tags: [Python标准库]
 ---
 # itertools模块

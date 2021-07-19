@@ -1,8 +1,8 @@
 ---
 title: python3内置函数
 date: 2018-09-25 22:16:07 +0800
-categories: [Python]
-tags: [Python]
+categories: [Python,Python基础]
+tags: [Python基础]
 ---
 
 abs(number)  

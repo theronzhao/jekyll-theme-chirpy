@@ -2,7 +2,7 @@
 title: Django基础
 date: 2019-01-06 19:14:46 +0800
 categories: [Django]
-tags: [Web开发,Django]
+tags: [Web开发技术,Django]
 ---
 Web框架的意义
 

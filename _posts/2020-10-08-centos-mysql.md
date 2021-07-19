@@ -1,8 +1,8 @@
 ---
 title: centos 7.6安装MySQL5.7
 date: 2020-10-08 21:34:55 +0800
-categories: [数据库]
-tags: [mysql,数据库,项目部署]
+categories: [环境配置]
+tags: [环境配置]
 ---
 
 

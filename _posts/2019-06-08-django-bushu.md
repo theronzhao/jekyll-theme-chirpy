@@ -2,7 +2,7 @@
 title: CentOS7下部署Django
 date: 2019-06-08 21:34:55 +0800
 categories: [Django]
-tags: [Django, Web开发, Python, 项目部署]
+tags: [Django, 环境配置]
 ---
 
 # CentOS7下部署Django项目

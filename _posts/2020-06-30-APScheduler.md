@@ -1,8 +1,8 @@
 ---
 title: APScheduler
 date: 2020-06-30 19:53:50 +0800
-categories: [Web开发]
-tags: [Web开发]
+categories: [Web开发技术]
+tags: [Web开发技术,APScheduler]
 ---
 
 

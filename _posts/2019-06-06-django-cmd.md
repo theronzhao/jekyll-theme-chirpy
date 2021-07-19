@@ -2,7 +2,7 @@
 title: Django常用命令介绍
 date: 2019-06-06 19:57:32 +0800
 categories: [Django]
-tags: [Django, Web开发, Python]
+tags: [Django]
 ---
 
 

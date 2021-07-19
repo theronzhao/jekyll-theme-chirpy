@@ -1,8 +1,8 @@
 ---
 title: TCP与UDP
 date: 2018-06-18 20:56:47 +0800
-categories: [网络通信]
-tags: [网络通信]
+categories: [计算机基础]
+tags: [网络通信,Python进阶,计算机基础]
 ---
 # 简介
 

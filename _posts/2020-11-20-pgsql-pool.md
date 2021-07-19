@@ -1,8 +1,8 @@
 ---
 title: PostgreSql连接池
 date: 2020-11-20 15:42:25 +0800
-categories: [数据库]
-tags: [PostgreSql]
+categories: [数据库,PostgreSQL]
+tags: [PostgreSQL]
 ---
 
 ### 连接池的作用及原理

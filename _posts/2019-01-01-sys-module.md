@@ -1,7 +1,7 @@
 ---
 title: sys模块
 date: 2019-01-01 20:33:05 +0800
-categories: [Python标准库]
+categories: [Python,标准库]
 tags: [Python标准库]
 ---
 # OS模块

@@ -1,8 +1,8 @@
 ---
 title: Flask程序运行报错signal only works in main thread
 date: 2020-10-29 19:44:55 +0800
-categories: [BUG专栏]
-tags: [Flask, BUG]
+categories: [BugShooting]
+tags: [Flask, BugShooting]
 ---
 
 

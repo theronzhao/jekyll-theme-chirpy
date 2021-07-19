@@ -1,8 +1,8 @@
 ---
 title: 分布式ID
 date: 2018-07-07 22:31:09 +0800
-categories: [Web开发]
-tags: [Web开发]
+categories: [Web开发技术]
+tags: [数据结构与算法,Web开发技术]
 ---
 
 ## UUID

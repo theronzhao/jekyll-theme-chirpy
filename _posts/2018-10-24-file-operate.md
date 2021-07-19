@@ -1,8 +1,8 @@
 ---
 title: 文件操作
 date: 2018-10-24 22:38:16 +0800
-categories: [Python]
-tags: [Python]
+categories: [Python,Python基础]
+tags: [Python基础]
 ---
 
 

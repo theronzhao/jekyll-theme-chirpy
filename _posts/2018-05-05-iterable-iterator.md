@@ -1,8 +1,8 @@
 ---
 title: 迭代器和生成器
 date: 2018-05-05 20:23:49 +0800
-categories: [Python]
-tags: [Python]
+categories: [Python,Python进阶]
+tags: [Python进阶]
 ---
 
 

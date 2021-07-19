@@ -2,7 +2,7 @@
 title: Django-ORM常用操作
 date: 2019-06-07 20:44:32 +0800
 categories: [Django]
-tags: [Django, Web开发, Python]
+tags: [Django]
 ---
 
 # model update常规用法

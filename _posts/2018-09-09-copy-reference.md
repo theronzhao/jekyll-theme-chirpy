@@ -1,8 +1,8 @@
 ---
 title: Python中的赋值_引用_拷贝_传参
 date: 2018-09-09 18:57:42 +0800
-categories: [Python]
-tags: [Python]
+categories: [Python,Python进阶]
+tags: [Python进阶]
 ---
 
 ## 1.赋值 VS 引用

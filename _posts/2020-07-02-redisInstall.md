@@ -1,8 +1,8 @@
 ---
 title: Ubuntu 16.04安装redis
 date: 2020-07-02 10:23:00 +0800
-categories: [生产工具]
-tags: [生产工具]
+categories: [环境配置]
+tags: [环境配置]
 ---
 ## 安装
 
