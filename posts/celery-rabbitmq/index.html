@@ -1,0 +1,171 @@
+<!DOCTYPE html><html lang="en-US" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="generator" content="Jekyll v4.2.0" /><meta property="og:title" content="Celery与RabbitMQ" /><meta property="og:locale" content="en_US" /><meta name="description" content="生产者消费者设计模式" /><meta property="og:description" content="生产者消费者设计模式" /><link rel="canonical" href="https://justzxy.cn/posts/celery-rabbitmq/" /><meta property="og:url" content="https://justzxy.cn/posts/celery-rabbitmq/" /><meta property="og:site_name" content="图样图森破" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2021-06-24T19:22:56+08:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="Celery与RabbitMQ" /><meta name="twitter:site" content="@" /><meta name="google-site-verification" content="google_meta_tag_verification" /> <script type="application/ld+json"> {"description":"生产者消费者设计模式","url":"https://justzxy.cn/posts/celery-rabbitmq/","headline":"Celery与RabbitMQ","dateModified":"2021-06-24T19:22:56+08:00","datePublished":"2021-06-24T19:22:56+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://justzxy.cn/posts/celery-rabbitmq/"},"@type":"BlogPosting","@context":"https://schema.org"}</script><title>Celery与RabbitMQ | 图样图森破</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/site.webmanifest"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><meta name="apple-mobile-web-app-title" content="图样图森破"><meta name="application-name" content="图样图森破"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/assets/img/favicons/browserconfig.xml"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://cdn.jsdelivr.net"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css"><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magnific-popup@1.1.0/dist/magnific-popup.min.css"> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><body data-spy="scroll" data-target="#toc"><div id="sidebar" class="d-flex flex-column align-items-end"><div class="profile-wrapper text-center"><div id="avatar"> <a href="/" alt="avatar" class="mx-auto"> <img src="/assets/img/avatar.jpg" alt="avatar" onerror="this.style.display='none'"> </a></div><div class="site-title mt-3"> <a href="/">图样图森破</a></div><div class="site-subtitle font-italic">Too Young Too Simple</div></div><ul class="w-100"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tags ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul><div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center"> <a href="https://github.com/" aria-label="github" class="order-3" target="_blank" rel="noopener"> <i class="fab fa-github-alt"></i> </a> <a href="https://twitter.com/" aria-label="twitter" class="order-4" target="_blank" rel="noopener"> <i class="fab fa-twitter"></i> </a> <a href=" javascript:location.href = 'mailto:' + ['example','doamin.com'].join('@')" aria-label="email" class="order-5" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" class="order-6" > <i class="fas fa-rss"></i> </a> <span class="icon-border order-2"></span> <span id="mode-toggle-wrapper" class="order-1"> <i class="mode-toggle fas fa-adjust"></i> <script type="text/javascript"> class ModeToggle { static get MODE_KEY() { return "mode"; } static get DARK_MODE() { return "dark"; } static get LIGHT_MODE() { return "light"; } constructor() { if (this.hasMode) { if (this.isDarkMode) { if (!this.isSysDarkPrefer) { this.setDark(); } } else { if (this.isSysDarkPrefer) { this.setLight(); } } } var self = this; /* always follow the system prefers */ this.sysDarkPrefers.addListener(function() { if (self.hasMode) { if (self.isDarkMode) { if (!self.isSysDarkPrefer) { self.setDark(); } } else { if (self.isSysDarkPrefer) { self.setLight(); } } self.clearMode(); } self.updateMermaid(); }); } /* constructor() */ setDark() { $('html').attr(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE); sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE); } setLight() { $('html').attr(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE); sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE); } clearMode() { $('html').removeAttr(ModeToggle.MODE_KEY); sessionStorage.removeItem(ModeToggle.MODE_KEY); } get sysDarkPrefers() { return window.matchMedia("(prefers-color-scheme: dark)"); } get isSysDarkPrefer() { return this.sysDarkPrefers.matches; } get isDarkMode() { return this.mode == ModeToggle.DARK_MODE; } get isLightMode() { return this.mode == ModeToggle.LIGHT_MODE; } get hasMode() { return this.mode != null; } get mode() { return sessionStorage.getItem(ModeToggle.MODE_KEY); } /* get the current mode on screen */ get modeStatus() { if (this.isDarkMode || (!this.hasMode && this.isSysDarkPrefer) ) { return ModeToggle.DARK_MODE; } else { return ModeToggle.LIGHT_MODE; } } updateMermaid() { if (typeof mermaid !== "undefined") { let expectedTheme = (this.modeStatus === ModeToggle.DARK_MODE? "dark" : "default"); let config = { theme: expectedTheme }; /* re-render the SVG › <https://github.com/mermaid-js/mermaid/issues/311#issuecomment-332557344> */ $(".mermaid").each(function() { let svgCode = $(this).prev().children().html(); $(this).removeAttr("data-processed"); $(this).html(svgCode); }); mermaid.initialize(config); mermaid.init(undefined, ".mermaid"); } } flipMode() { if (this.hasMode) { if (this.isSysDarkPrefer) { if (this.isLightMode) { this.clearMode(); } else { this.setLight(); } } else { if (this.isDarkMode) { this.clearMode(); } else { this.setDark(); } } } else { if (this.isSysDarkPrefer) { this.setLight(); } else { this.setDark(); } } this.updateMermaid(); } /* flipMode() */ } /* ModeToggle */ let toggle = new ModeToggle(); $(".mode-toggle").click(function() { toggle.flipMode(); }); </script> </span></div></div><div id="topbar-wrapper" class="row justify-content-center topbar-down"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Posts </a> </span> <span>Celery与RabbitMQ</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Search..."> <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="post-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><h1 data-toc-skip>Celery与RabbitMQ</h1><div class="post-meta text-muted d-flex flex-column"><div> <span class="semi-bold"> tooYoungtooSimple </span> <span class="timeago " data-toggle="tooltip" data-placement="bottom" title="Thu, Jun 24, 2021, 7:22 PM +0800" prep="on" > Jun 24 <i class="unloaded">2021-06-24T19:22:56+08:00</i> </span></div><div> <span class="readtime" data-toggle="tooltip" data-placement="bottom" title="2343 words">13 min</span></div></div><div class="post-content"><h2 id="生产者消费者设计模式">生产者消费者设计模式</h2><p>在工作中，大家可能会碰到这样一种情况：某个模块负责产生数据，这些数据由另一个模块来负责处理（此处的模块是广义的，可以是类、函数、线程、进程等）。</p><p>产生数据的模块，就形象地称为生产者；而处理数据的模块，就称为消费者。</p><p>在生产者与消费者之间在加个缓冲区，我们称之为消息队列，生产者负责往消息队列中写入消息，而消费者负责从消息队列里读取消息，这就构成了生产者消费者模型。</p><p><img data-proofer-ignore data-src=".\images\批注 2020-08-04 224559.jpg" alt="" /></p><p><strong>生产者消费者模型的优点：</strong></p><p><strong>1、解耦</strong></p><p>假设生产者和消费者分别是两个类。</p><p>如果让生产者直接调用消费者的某个方法，那么生产者对于消费者就会产生依赖（也就是耦合）。</p><p>将来如果消费者的代码发生变化， 可能会影响到生产者。而如果两者都依赖于某个缓冲区，两者之间不直接依赖，耦合也就相应降低了。</p><p><strong>2、支持并发</strong></p><p>由于生产者与消费者是两个独立的并发体，他们之间是用缓冲区作为桥梁连接，生产者只需要往缓冲区里丢数据，</p><p>就可以继续生产下一个数据，而消费者只需要从缓冲区了拿数据即可，这样就不会因为彼此的处理速度而发生阻塞。</p><p><strong>3、支持忙闲不均</strong></p><p>缓冲区还有另一个好处。如果制造数据的速度时快时慢，缓冲区的好处就体现出来了。</p><p>当数据制造快的时候，消费者来不及处理，未处理的数据可以暂时存在缓冲区中。 等生产者的制造速度慢下来，消费者再慢慢处理掉。</p><h2 id="分布式队列服务celery">分布式队列服务Celery</h2><h3 id="1celery简介">1.celery简介</h3><p>Celery是一个简单，灵活且可靠的分布式系统，可以处理大量消息，同时为操作提供维护该系统所需的工具。 这是一个任务队列，着重于实时处理，同时还支持任务调度。</p><ul><li><p>简单：celery易于使用和维护，不需要配置文件。</p><li>高可用度：如果连接丢失或者失败，辅助服务器和客户端将自动重试，并且某些代理以主/主或主/从方式支持HA<li><p>快速：一个celery进程每分钟可以处理数百万个任务，往返延迟不到毫秒</p><li>灵活：celery几乎所有部分都可以扩展或单独使用。可以自制连接池、序列化、压缩模式、日志、调度器、消费者、生产者、自动扩展、中间人传输或者更多<li>单个 Celery 进程每分钟可处理数以百万计的任务。<li>通过消息进行通信，使用<code class="language-plaintext highlighter-rouge">消息队列（broker）</code>在<code class="language-plaintext highlighter-rouge">客户端</code>和<code class="language-plaintext highlighter-rouge">消费者</code>之间进行协调。</ul><p><img data-proofer-ignore data-src=".\images\1.jpg" alt="" /></p><p><strong>Application</strong>：负责产生计算任务，交给任务队列去处理</p><p><strong>Celery Beat</strong>：以独立进程的形式存在，会读取配置文件的内容，周期性地将执行任务的请求发送给任务队列</p><p><strong>Broker</strong>：负责接受任务生产者发送过来的任务处理消息，存进队列之后再进行调度，分发给任务消费方</p><p><strong>Celery Worker</strong>：负责接收任务处理中间方发来的任务处理请求，完成这些任务，并且返回任务处理的结果</p><p><strong>Backend</strong>：处理完后将状态信息和结果的保存，以供查询。框架内置支持 rpc，Redis，RabbitMQ 等方式来保存任务处理后的状态信息</p><h3 id="2简单入门celery">2.简单入门celery</h3><p>安装Celery：</p><div lang="bash" class="language-bash highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre><span class="nv">$ </span>pip <span class="nb">install</span> <span class="nt">-U</span> Celery
+</pre></table></code></div></div><div lang="python" class="language-python highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre><span class="kn">from</span> <span class="nn">celery</span> <span class="kn">import</span> <span class="n">Celery</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">(</span><span class="s">'hello'</span><span class="p">,</span> <span class="n">broker</span><span class="o">=</span><span class="s">'amqp://guest@localhost//'</span><span class="p">)</span>
+
+<span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">task</span>
+<span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">'hello world'</span>
+</pre></table></code></div></div><p><strong>启动Celery服务</strong></p><div lang="bash" class="language-bash highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre><span class="nv">$ </span>celery <span class="nt">-A</span> celery_tasks.main worker <span class="nt">-l</span> info
+
+<span class="nt">-A</span>指对应的应用程序, 其参数是项目中 Celery实例的位置。
+worker指这里要启动的worker。
+<span class="nt">-l</span>指日志等级，比如info等级。
+</pre></table></code></div></div><p><strong>celery worker的工作模式</strong></p><ul><li>默认是进程池方式，进程数以当前机器的CPU核数为参考，每个CPU开四个进程。<li>指定进程数：<code class="language-plaintext highlighter-rouge">celery worker -A your_items --concurrency=4</code><li>改变进程池方式为协程方式：<code class="language-plaintext highlighter-rouge">celery worker -A your_items --concurrency=1000 -P eventlet -c 1000</code></ul><h2 id="rabbitmq介绍和使用">RabbitMQ介绍和使用</h2><h3 id="1-rabbitmq介绍">1. RabbitMQ介绍</h3><p>RabbitMQ是一个遵循AMQP协议的消息中间件，它从生产者接受消息并传递给消费者</p><p>AMQP ：Advanced Message Queue，高级消息队列协议。它是应用层协议的一个开放标准，为面向消息的中间件设计，基于此协议的客户端与消息中间件可传递消息，并不受产品、开发语言等条件的限制。</p><p>RabbitMQ 最初起源于金融系统，用于在分布式系统中存储转发消息，在易用性、扩展性、高可用性等方面表现不俗。具体特点包括：</p><ol><li><p>可靠性（Reliability）</p><p>RabbitMQ 使用一些机制来保证可靠性，如持久化、传输确认、发布确认。</p><li><p>灵活的路由（Flexible Routing）</p><p>在消息进入队列之前，通过 Exchange 来路由消息的。对于典型的路由功能，RabbitMQ 已经提供了一些内置的 Exchange 来实现。针对更复杂的路由功能，可以将多个 Exchange 绑定在一起，也通过插件机制实现自己的 Exchange 。</p><li><p>消息集群（Clustering）</p><p>多个 RabbitMQ 服务器可以组成一个集群，形成一个逻辑 Broker 。</p><li><p>高可用（Highly Available Queues）</p><p>队列可以在集群中的机器上进行镜像，使得在部分节点出问题的情况下队列仍然可用。</p><li><p>多种协议（Multi-protocol）</p><p>RabbitMQ 支持多种消息队列协议，比如 STOMP、MQTT 等等。</p><li><p>多语言客户端（Many Clients）</p><p>RabbitMQ 几乎支持所有常用语言，比如 Java、.NET、Ruby 等等。</p><li><p>管理界面（Management UI）</p><p>RabbitMQ 提供了一个易用的用户界面，使得用户可以监控和管理消息 Broker 的许多方面。</p><li><p>跟踪机制（Tracing）</p><p>如果消息异常，RabbitMQ 提供了消息跟踪机制，使用者可以找出发生了什么。</p><li><p>插件机制（Plugin System）</p><p>RabbitMQ 提供了许多插件，来从多方面进行扩展，也可以编写自己的插件。</p></ol><p><img data-proofer-ignore data-src=".\images\图片2.png" alt="" /></p><h3 id="2-安装rabbitmq">2. 安装RabbitMQ</h3><blockquote><p><strong>1.安装Erlang</strong></p><ul><li>由于 RabbitMQ 是采用 Erlang 编写的，所以需要安装 Erlang 语言库。</ul></blockquote><div lang="bash" class="language-bash highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre><span class="c"># 1. 在系统中加入 erlang apt 仓库</span>
+<span class="nv">$ </span>wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
+<span class="nv">$ </span><span class="nb">sudo </span>dpkg <span class="nt">-i</span> erlang-solutions_1.0_all.deb
+
+<span class="c"># 2. 更新 apt 仓库和安装 Erlang</span>
+<span class="nv">$ </span><span class="nb">sudo </span>apt-get update
+<span class="nv">$ </span><span class="nb">sudo </span>apt-get <span class="nb">install </span>erlang erlang-nox
+</pre></table></code></div></div><blockquote><p><strong>2.安装RabbitMQ</strong></p><ul><li>安装成功后，默认就是启动状态。</ul></blockquote><div lang="bash" class="language-bash highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre><span class="c"># 1. 先在系统中加入 rabbitmq apt 仓库，再加入 rabbitmq signing key</span>
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s1">'deb http://www.rabbitmq.com/debian/ testing main'</span> | <span class="nb">sudo tee</span> /etc/apt/sources.list.d/rabbitmq.list
+<span class="nv">$ </span>wget <span class="nt">-O-</span> https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | <span class="nb">sudo </span>apt-key add -
+
+<span class="c"># 2. 更新 apt 仓库和安装 RabbitMQ</span>
+<span class="nv">$ </span><span class="nb">sudo </span>apt-get update
+<span class="nv">$ </span><span class="nb">sudo </span>apt-get <span class="nb">install </span>rabbitmq-server
+</pre></table></code></div></div><div lang="bash" class="language-bash highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre><span class="c"># 重启</span>
+<span class="nv">$ </span><span class="nb">sudo </span>systemctl restart rabbitmq-server
+<span class="c"># 启动</span>
+<span class="nv">$ </span><span class="nb">sudo </span>systemctl start rabbitmq-server
+<span class="c"># 关闭</span>
+<span class="nv">$ </span><span class="nb">sudo </span>systemctl stop rabbitmq-server
+</pre></table></code></div></div><blockquote><p><strong>3.Python访问RabbitMQ</strong></p><ul><li>RabbitMQ提供默认的administrator账户。<li>用户名和密码：<code class="language-plaintext highlighter-rouge">guest</code>、<code class="language-plaintext highlighter-rouge">guest</code><li>协议：<code class="language-plaintext highlighter-rouge">amqp</code><li>地址：<code class="language-plaintext highlighter-rouge">localhost</code><li>端口：<code class="language-plaintext highlighter-rouge">5672</code><li>查看队列中的消息：<code class="language-plaintext highlighter-rouge">sudo rabbitctl list_queues</code></ul></blockquote><div lang="bash" class="language-bash highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre><span class="c"># Python3虚拟环境下，安装pika</span>
+<span class="nv">$ </span>pip <span class="nb">install </span>pika
+</pre></table></code></div></div><div lang="bash" class="language-bash highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre><td class="rouge-code"><pre><span class="c"># 生产者代码：rabbitmq_producer.py</span>
+import pika
+
+
+<span class="c"># 链接到RabbitMQ服务器</span>
+credentials <span class="o">=</span> pika.PlainCredentials<span class="o">(</span><span class="s1">'guest'</span>, <span class="s1">'guest'</span><span class="o">)</span>
+connection <span class="o">=</span> pika.BlockingConnection<span class="o">(</span>pika.ConnectionParameters<span class="o">(</span><span class="s1">'localhost'</span>,5672,<span class="s1">'/'</span>,credentials<span class="o">))</span>
+<span class="c">#创建频道</span>
+channel <span class="o">=</span> connection.channel<span class="o">()</span>
+<span class="c"># 声明消息队列</span>
+channel.queue_declare<span class="o">(</span><span class="nv">queue</span><span class="o">=</span><span class="s1">'test123'</span><span class="o">)</span>
+<span class="c"># routing_key是队列名 body是要插入的内容</span>
+channel.basic_publish<span class="o">(</span><span class="nv">exchange</span><span class="o">=</span><span class="s1">''</span>, <span class="nv">routing_key</span><span class="o">=</span><span class="s1">'test123'</span>, <span class="nv">body</span><span class="o">=</span><span class="s1">'Hello RabbitMQ!'</span><span class="o">)</span>
+print<span class="o">(</span><span class="s2">"开始向 'test123' 队列中发布消息 'Hello RabbitMQ!'"</span><span class="o">)</span>
+<span class="c"># 关闭链接</span>
+connection.close<span class="o">()</span>
+</pre></table></code></div></div><div lang="python" class="language-python highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre><td class="rouge-code"><pre><span class="c1"># 消费者代码：rabbitmq_customer.py 
+</span><span class="kn">import</span> <span class="nn">pika</span>
+
+
+<span class="c1"># 链接到rabbitmq服务器
+</span><span class="n">credentials</span> <span class="o">=</span> <span class="n">pika</span><span class="p">.</span><span class="n">PlainCredentials</span><span class="p">(</span><span class="s">'guest'</span><span class="p">,</span> <span class="s">'guest'</span><span class="p">)</span>
+<span class="n">connection</span> <span class="o">=</span> <span class="n">pika</span><span class="p">.</span><span class="n">BlockingConnection</span><span class="p">(</span><span class="n">pika</span><span class="p">.</span><span class="n">ConnectionParameters</span><span class="p">(</span><span class="s">'localhost'</span><span class="p">,</span><span class="mi">5672</span><span class="p">,</span><span class="s">'/'</span><span class="p">,</span><span class="n">credentials</span><span class="p">))</span>
+<span class="c1"># 创建频道，声明消息队列
+</span><span class="n">channel</span> <span class="o">=</span> <span class="n">connection</span><span class="p">.</span><span class="n">channel</span><span class="p">()</span>
+<span class="n">channel</span><span class="p">.</span><span class="n">queue_declare</span><span class="p">(</span><span class="n">queue</span><span class="o">=</span><span class="s">'test123'</span><span class="p">)</span>
+<span class="c1"># 定义接受消息的回调函数
+</span><span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+<span class="c1"># 告诉RabbitMQ使用callback来接收信息
+</span><span class="n">channel</span><span class="p">.</span><span class="n">basic_consume</span><span class="p">(</span><span class="n">callback</span><span class="p">,</span> <span class="n">queue</span><span class="o">=</span><span class="s">'test123'</span><span class="p">,</span> <span class="n">no_ack</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c1"># 开始接收信息
+</span><span class="n">channel</span><span class="p">.</span><span class="n">start_consuming</span><span class="p">()</span>
+</pre></table></code></div></div><h3 id="3-新建administrator用户">3. 新建administrator用户</h3><div lang="bash" class="language-bash highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre><td class="rouge-code"><pre><span class="c"># 新建用户，并设置密码</span>
+<span class="nv">$ </span><span class="nb">sudo </span>rabbitmqctl add_user admin your_password 
+<span class="c"># 设置标签为administrator</span>
+<span class="nv">$ </span><span class="nb">sudo </span>rabbitmqctl set_user_tags admin administrator
+<span class="c"># 设置所有权限</span>
+<span class="nv">$ </span><span class="nb">sudo </span>rabbitmqctl set_permissions <span class="nt">-p</span> / admin <span class="s2">".*"</span> <span class="s2">".*"</span> <span class="s2">".*"</span>
+<span class="c"># 查看用户列表</span>
+<span class="nb">sudo </span>rabbitmqctl list_users
+<span class="c"># 删除用户</span>
+<span class="nv">$ </span><span class="nb">sudo </span>rabbitmqctl delete_user admin
+</pre></table></code></div></div><h3 id="4-rabbitmq配置远程访问">4. RabbitMQ配置远程访问</h3><blockquote><p><strong>1.准备配置文件</strong></p><ul><li>安装好 <code class="language-plaintext highlighter-rouge">RabbitMQ</code> 之后，在 <code class="language-plaintext highlighter-rouge">/etc/rabbitmq</code> 目录下面默认没有配置文件，需要单独下载。</ul></blockquote><div lang="bash" class="language-bash highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre><span class="nv">$ </span><span class="nb">cd</span> /etc/rabbitmq/
+<span class="nv">$ </span>wget https://raw.githubusercontent.com/rabbitmq/rabbitmq-server/master/docs/rabbitmq.config.example
+<span class="nv">$ </span><span class="nb">sudo cp </span>rabbitmq.config.example rabbitmq.config
+</pre></table></code></div></div><blockquote><p><strong>2.设置配置文件</strong></p></blockquote><div lang="bash" class="language-bash highlighter-rouge"><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre><span class="nv">$ </span><span class="nb">sudo </span>vim rabbitmq.config
+
+<span class="c"># 设置配置文件结束后，重启RabbitMQ服务端</span>
+<span class="nv">$ </span><span class="nb">sudo </span>systemctl restart rabbitmq-server
+</pre></table></code></div></div></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/python%E5%BA%94%E7%94%A8%E6%A1%86%E6%9E%B6/'>Python应用框架</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/celery/" class="post-tag no-text-decoration" >celery</a> <a href="/tags/rabbitmq/" class="post-tag no-text-decoration" >rabbitmq</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=Celery与RabbitMQ - 图样图森破&url=https://justzxy.cn/posts/celery-rabbitmq/" data-toggle="tooltip" data-placement="top" title="Twitter" target="_blank" rel="noopener" aria-label="Twitter"> <i class="fa-fw fab fa-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=Celery与RabbitMQ - 图样图森破&u=https://justzxy.cn/posts/celery-rabbitmq/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://telegram.me/share?text=Celery与RabbitMQ - 图样图森破&url=https://justzxy.cn/posts/celery-rabbitmq/" data-toggle="tooltip" data-placement="top" title="Telegram" target="_blank" rel="noopener" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <i class="fa-fw fas fa-link small" onclick="copyLink()" data-toggle="tooltip" data-placement="top" title="Copy link"></i> </span></div></div></div></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted topbar-down"><div class="access"><div id="access-lastmod" class="post"> <span>Recent Update</span><ul class="post-content pl-0 pb-1 ml-1 mt-2"><li><a href="/posts/js/">JavaScript基础整理</a><li><a href="/posts/http-code/">HTTP 响应码</a><li><a href="/posts/pip/">python包管理工具pip</a><li><a href="/posts/pyecharts-pie/">pyecharts饼图使用笔记</a><li><a href="/posts/redis-fast/">Redis为什么这么快</a></ul></div><div id="access-tags"> <span>Trending Tags</span><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/python%E6%A0%87%E5%87%86%E5%BA%93/">Python标准库</a> <a class="post-tag" href="/tags/web%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/">Web开发技术</a> <a class="post-tag" href="/tags/python%E8%BF%9B%E9%98%B6/">Python进阶</a> <a class="post-tag" href="/tags/mysql/">MySQL</a> <a class="post-tag" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a> <a class="post-tag" href="/tags/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">环境配置</a> <a class="post-tag" href="/tags/django/">Django</a> <a class="post-tag" href="/tags/linux/">Linux</a> <a class="post-tag" href="/tags/python%E5%9F%BA%E7%A1%80/">Python基础</a> <a class="post-tag" href="/tags/redis/">Redis</a></div></div></div><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.js"></script><div id="toc-wrapper" class="pl-0 pr-4 mb-5"> <span class="pl-3 pt-2 mb-2">Contents</span><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="post-extend-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="related-posts" class="mt-5 mb-2 mb-sm-4"><h3 class="pt-2 mt-1 mb-4 ml-1" data-toc-skip>Further Reading</h3><div class="card-deck mb-4"><div class="card"> <a href="/posts/http-summary/"><div class="card-body"> <span class="timeago small" > Jul 20 <i class="unloaded">2021-07-20T11:37:41+08:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>HTTP概述</h3><div class="text-muted small"><p> HTTP 协议的介绍 HTTP 协议的全称是(HyperText Transfer Protocol)，翻译过来就是超文本传输协议。它规定了浏览器和 Web 服务器通信数据的格式，也就是说浏览器和web服务器通信需要使用http协议。 传输 HTTP 协议格式的数据是基于 TCP 传输协议的，发送数据之前需要先建立连接。 URL的概念 URL的英文全拼是(Uniform Resoure...</p></div></div></a></div><div class="card"> <a href="/posts/pgsql/"><div class="card-body"> <span class="timeago small" > Jul 19 <i class="unloaded">2021-07-19T22:03:41+08:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>PostgreSQL常用命令</h3><div class="text-muted small"><p> 一、PostgreSQL与MySQL常用命令的区别 语句 PostgreSQL MySQL 登录数据库 psql -U postgres -W mysql -uroot -p 查看数据库列表 \list或者\l s...</p></div></div></a></div><div class="card"> <a href="/posts/re-express/"><div class="card-body"> <span class="timeago small" > Jul 19 <i class="unloaded">2021-07-19T21:44:02+08:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>常用正则表达式</h3><div class="text-muted small"><p> 邮箱 example-123@gmail.com 只允许英文字母、数字、下划线、英文句号、以及中划线组成 ^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$ 你好001Abc@abcdef.com.cn 名称允许汉字、字母、数字，域名只允许英文域名 ^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]...</p></div></div></a></div></div></div><div class="post-navigation d-flex justify-content-between"> <a href="/posts/python-spider/" class="btn btn-outline-primary" prompt="Older"><p>爬虫与requests库</p></a> <a href="/posts/Cookie_Session_Token_JWT/" class="btn btn-outline-primary" prompt="Newer"><p>登录信息认证</p></a></div></div></div></div><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center"><div class="footer-left"><p class="mb-0"> © 2021 tooYoungtooSimple. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> theme.</p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-sm-11 post-content"><div id="search-hints"><h4 class="text-muted mb-4">Trending Tags</h4><a class="post-tag" href="/tags/python%E6%A0%87%E5%87%86%E5%BA%93/">Python标准库</a> <a class="post-tag" href="/tags/web%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/">Web开发技术</a> <a class="post-tag" href="/tags/python%E8%BF%9B%E9%98%B6/">Python进阶</a> <a class="post-tag" href="/tags/mysql/">MySQL</a> <a class="post-tag" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a> <a class="post-tag" href="/tags/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">环境配置</a> <a class="post-tag" href="/tags/django/">Django</a> <a class="post-tag" href="/tags/linux/">Linux</a> <a class="post-tag" href="/tags/python%E5%9F%BA%E7%A1%80/">Python基础</a> <a class="post-tag" href="/tags/redis/">Redis</a></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.7.3/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="https://justzxy.cn{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); </script> <script async src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.15.0,npm/bootstrap@4/dist/js/bootstrap.min.js"></script> <script defer src="/app.js"></script> <script defer src="https://www.googletagmanager.com/gtag/js?id="></script> <script> document.addEventListener("DOMContentLoaded", function(event) { window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', ''); }); </script> <script src="https://cdn.jsdelivr.net/combine/npm/lozad/dist/lozad.min.js,npm/magnific-popup@1/dist/jquery.magnific-popup.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script>

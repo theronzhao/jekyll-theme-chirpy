@@ -1,0 +1,507 @@
+<!DOCTYPE html><html lang="en-US" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="generator" content="Jekyll v4.2.0" /><meta property="og:title" content="MySQL基础-常用SQL语句" /><meta property="og:locale" content="en_US" /><meta name="description" content="登录和登出数据库" /><meta property="og:description" content="登录和登出数据库" /><link rel="canonical" href="https://justzxy.cn/posts/mysql-2/" /><meta property="og:url" content="https://justzxy.cn/posts/mysql-2/" /><meta property="og:site_name" content="图样图森破" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2018-03-21T22:34:12+08:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="MySQL基础-常用SQL语句" /><meta name="twitter:site" content="@" /><meta name="google-site-verification" content="google_meta_tag_verification" /> <script type="application/ld+json"> {"description":"登录和登出数据库","url":"https://justzxy.cn/posts/mysql-2/","headline":"MySQL基础-常用SQL语句","dateModified":"2021-07-19T23:50:50+08:00","datePublished":"2018-03-21T22:34:12+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://justzxy.cn/posts/mysql-2/"},"@type":"BlogPosting","@context":"https://schema.org"}</script><title>MySQL基础-常用SQL语句 | 图样图森破</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/site.webmanifest"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><meta name="apple-mobile-web-app-title" content="图样图森破"><meta name="application-name" content="图样图森破"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/assets/img/favicons/browserconfig.xml"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://cdn.jsdelivr.net"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css"><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magnific-popup@1.1.0/dist/magnific-popup.min.css"> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><body data-spy="scroll" data-target="#toc"><div id="sidebar" class="d-flex flex-column align-items-end"><div class="profile-wrapper text-center"><div id="avatar"> <a href="/" alt="avatar" class="mx-auto"> <img src="/assets/img/avatar.jpg" alt="avatar" onerror="this.style.display='none'"> </a></div><div class="site-title mt-3"> <a href="/">图样图森破</a></div><div class="site-subtitle font-italic">Too Young Too Simple</div></div><ul class="w-100"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tags ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul><div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center"> <a href="https://github.com/" aria-label="github" class="order-3" target="_blank" rel="noopener"> <i class="fab fa-github-alt"></i> </a> <a href="https://twitter.com/" aria-label="twitter" class="order-4" target="_blank" rel="noopener"> <i class="fab fa-twitter"></i> </a> <a href=" javascript:location.href = 'mailto:' + ['example','doamin.com'].join('@')" aria-label="email" class="order-5" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" class="order-6" > <i class="fas fa-rss"></i> </a> <span class="icon-border order-2"></span> <span id="mode-toggle-wrapper" class="order-1"> <i class="mode-toggle fas fa-adjust"></i> <script type="text/javascript"> class ModeToggle { static get MODE_KEY() { return "mode"; } static get DARK_MODE() { return "dark"; } static get LIGHT_MODE() { return "light"; } constructor() { if (this.hasMode) { if (this.isDarkMode) { if (!this.isSysDarkPrefer) { this.setDark(); } } else { if (this.isSysDarkPrefer) { this.setLight(); } } } var self = this; /* always follow the system prefers */ this.sysDarkPrefers.addListener(function() { if (self.hasMode) { if (self.isDarkMode) { if (!self.isSysDarkPrefer) { self.setDark(); } } else { if (self.isSysDarkPrefer) { self.setLight(); } } self.clearMode(); } self.updateMermaid(); }); } /* constructor() */ setDark() { $('html').attr(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE); sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE); } setLight() { $('html').attr(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE); sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE); } clearMode() { $('html').removeAttr(ModeToggle.MODE_KEY); sessionStorage.removeItem(ModeToggle.MODE_KEY); } get sysDarkPrefers() { return window.matchMedia("(prefers-color-scheme: dark)"); } get isSysDarkPrefer() { return this.sysDarkPrefers.matches; } get isDarkMode() { return this.mode == ModeToggle.DARK_MODE; } get isLightMode() { return this.mode == ModeToggle.LIGHT_MODE; } get hasMode() { return this.mode != null; } get mode() { return sessionStorage.getItem(ModeToggle.MODE_KEY); } /* get the current mode on screen */ get modeStatus() { if (this.isDarkMode || (!this.hasMode && this.isSysDarkPrefer) ) { return ModeToggle.DARK_MODE; } else { return ModeToggle.LIGHT_MODE; } } updateMermaid() { if (typeof mermaid !== "undefined") { let expectedTheme = (this.modeStatus === ModeToggle.DARK_MODE? "dark" : "default"); let config = { theme: expectedTheme }; /* re-render the SVG › <https://github.com/mermaid-js/mermaid/issues/311#issuecomment-332557344> */ $(".mermaid").each(function() { let svgCode = $(this).prev().children().html(); $(this).removeAttr("data-processed"); $(this).html(svgCode); }); mermaid.initialize(config); mermaid.init(undefined, ".mermaid"); } } flipMode() { if (this.hasMode) { if (this.isSysDarkPrefer) { if (this.isLightMode) { this.clearMode(); } else { this.setLight(); } } else { if (this.isDarkMode) { this.clearMode(); } else { this.setDark(); } } } else { if (this.isSysDarkPrefer) { this.setLight(); } else { this.setDark(); } } this.updateMermaid(); } /* flipMode() */ } /* ModeToggle */ let toggle = new ModeToggle(); $(".mode-toggle").click(function() { toggle.flipMode(); }); </script> </span></div></div><div id="topbar-wrapper" class="row justify-content-center topbar-down"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Posts </a> </span> <span>MySQL基础-常用SQL语句</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Search..."> <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="post-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><h1 data-toc-skip>MySQL基础-常用SQL语句</h1><div class="post-meta text-muted d-flex flex-column"><div> <span class="semi-bold"> tooYoungtooSimple </span> <span class="timeago " data-toggle="tooltip" data-placement="bottom" title="Wed, Mar 21, 2018, 10:34 PM +0800" prep="on" > Mar 21, 2018 <i class="unloaded">2018-03-21T22:34:12+08:00</i> </span></div><div> <span> <span class="timeago lastmod" data-toggle="tooltip" data-placement="bottom" title="Mon, Jul 19, 2021, 11:50 PM +0800" prefix="Updated " > Jul 19 <i class="unloaded">2021-07-19T23:50:50+08:00</i> </span> </span> <span class="readtime" data-toggle="tooltip" data-placement="bottom" title="7230 words">40 min</span></div></div><div class="post-content"><h2 id="登录和登出数据库">登录和登出数据库</h2><pre><code class="language-mysql"># 登录数据库
+mysql -u[用户名] -p[密码] -h [主机名] -P[端口号]
+    -u 后面是登录的用户名
+    -p 后面是登录密码, 如果不填写, 回车之后会提示输入密码
+    
+# 显示当前时间
+select now();
+
+# 登出(退出)数据库
+quit 或 exit 或 ctrl + d
+</code></pre><h2 id="数据库操作">数据库操作</h2><pre><code class="language-mysql"># 查看所有数据库
+show databases;
+
+# 显示授予用户（所有用户或特定用户）的安全权限
+show grants
+
+# 显示服务器错误或警告消息
+SHOW ERRORS
+SHOW WARNINGS
+
+# 显示服务器状态信息
+SHOW STATUS
+
+# 查看创库SQL语句
+show create database 数据库名;
+
+# 创建数据库
+create database dbname charset=utf8;
+
+# 使用数据库
+use dbname;
+
+# 查看当前使用的数据库
+select database();
+
+# 删除数据库-慎重
+drop database dbname;
+
+# 备份
+mysqldump –uroot –p 数据库名 &gt; python.sql;
+
+# 恢复
+mysql -uroot –p 新数据库名 &lt; python.sql
+</code></pre><h2 id="表结构操作">表结构操作</h2><pre><code class="language-mysql"># 查看表结构
+desc [表名]
+DESCRIBE [表名]
+show columns from [表名] 
+
+# 给数据表改名
+rename table 旧表名 to 新表名
+
+# 查看当前数据库中所有表
+show tables;
+
+# 查看创表SQL语句
+show create table tablename;
+
+# 查看MySQL数据库支持的表的存储引擎
+show engines;
+
+# 创建表
+create table tablename(
+    字段名称1 数据类型  可选的约束条件,
+    字段名称2 数据类型  可选的约束条件,
+    ...
+);
+
+# 修改表的存储引擎
+alter table 表名 engine = 引擎类型;
+
+# 修改表-添加字段
+alter table 表名 add 列名 类型 约束;
+
+# 修改表-修改字段类型
+alter table 表名 modify 列名 类型 约束;  # modify: 只能修改字段类型或者约束，不能修改字段名
+
+# 修改表-修改字段名和字段类型
+alter table 表名 change 原名 新名 类型及约束;  # change: 既能对字段重命名又能修改字段类型还能修改约束
+
+# 修改表-删除字段
+alter table 表名 drop 列名;
+alter table 表名 drop foreign key 外键名;  # 删除外键
+
+# 删除表
+drop table 表名;
+</code></pre><h2 id="增加数据">增加数据</h2><pre><code class="language-mysql"># 整行插入：值的顺序与表结构字段的顺序完全一一对应
+insert into 表名 values (值1， 值2， 值3...)
+
+# 部分列插入：值的顺序与给出的列顺序对应
+insert into 表名(列1, 列3, 列7...) values(值1, 值3, 值7...)
+
+# 全列多行插入
+insert into 表名 values(值1， 值2， 值3...),(值4， 值5， 值6...),(值7， 值8， 值9...)...;
+
+# 部分列多行插入
+insert into 表名(列1, 列3, 列7...) values(值1, 值3, 值7...),(值2, 值5, 值6...)...;
+
+主键列是自动增长，但是在全列插入时需要占位，通常使用空值(0或者null或者default)
+在全列插入时，如果字段列有默认值可以使用 default 来占位，插入后的数据就是之前设置的默认值
+
+# 创建表并给某个字段添加数据
+create table .. select 列名 .. 表示创建表并插入数据
+
+create table good_brands (     
+id int unsigned primary key auto_increment,     
+name varchar(40) not null) select brand_name as name from goods group by brand_name;
+</code></pre><h2 id="修改数据">修改数据</h2><pre><code class="language-mysql">update 表名 set 列1=值1,列2=值2... where 条件
+# 例：
+update students set age = 18, gender = '女' where id = 6;
+
+
+连接更新表中数据使用: update .. join .. 语句
+
+将goods表中的分类名称更改成商品分类表中对应的分类id
+-- 查看goods表中的商品分类名称对应的商品分类id
+select * from goods inner join good_cates on goods.cate_name = good_cates.name;
+
+-- 把该语句中from 后的语句理解为一张虚表  
+update (goods g inner join good_cates gc on g.cate_name=gc.name) set g.cate_name=gc.id;
+</code></pre><h2 id="删除数据">删除数据</h2><pre><code class="language-mysql"># 物理删除
+delete from 表名 where 条件  # 删除的是整行数据
+
+# 逻辑删除
+update 表名 set 逻辑字段 = 1 where 条件;  # 设置一个逻辑字段，true表示删除，false表示未删除
+
+# 清空数据表的所有数据
+ truncate 表名
+</code></pre><h2 id="查询数据">查询数据</h2><pre><code class="language-mysql"># 查询所有列
+select * from 表名;
+
+# 查询指定列
+select 列1, 列2, ... from 表名;
+
+虽然SELECT通常用来从表中检索数据，但可以省略FROM子句以便简单地访问和处理表达式。例如，SELECT 3*2；将返回6, SELECT Trim(' abc  ')；将返回abc
+
+# select子句顺序
+select ... from ... where ... group by ... with rollup having ... order by ... limit ... offset ...
+</code></pre><h3 id="完全限定查询">完全限定查询</h3><pre><code class="language-mysql"># 通常情况下select会查询数据库中的所有表来找到数据,但是通过限定查询,可以指定在哪个表中查询哪个字段
+select products.pro_name from products;
+select products.pro_name from crashcourse.products;
+</code></pre><h3 id="字段取别名--as">字段取别名 as</h3><pre><code class="language-mysql"># as 关键字的使用 --- 给表中字段 或者 表名起别名
+select id as 序号, name as 名字, gender as 性别 from students;  # 给字段起别名
+select s.id,s.name,s.gender from students as s;  # 给表起别名
+</code></pre><h3 id="去重查询-distinct">去重查询 distinct</h3><pre><code class="language-mysql">#  distinct关键字 --- 去除重复数据行
+select distinct 列1,... from 表名;
+</code></pre><h3 id="条件查询-where">条件查询 where</h3><pre><code class="language-mysql"># where 条件查询
+使用where条件查询可以对表中的数据进行筛选，条件成立的记录会出现在结果集中。
+select * from 表名 where 条件;
+
+# 比较运算符查询 大于小于等于不等于... 不等于的两种表示(&lt;&gt;, !=)
+select * from students where is_delete=0;
+select * from students where id &lt;= 4;
+
+# 逻辑运算符 and or not
+# 不支持连续不等式，多个条件判断想要作为一个整体，可以结合()
+select * from students where not (age &gt;= 10 and age &lt;= 15);  
+# 这句执行时,由于and的优先级高于or  所以SQL语句会将id =1003 and price &gt; 10当作一个整体条件
+select name, price from products where id = 1002 or id =1003 and price &gt; 10;
+# 添加一个括号可以提高优先级
+select name, price from products where (id = 1002 or id =1003) and price &gt; 10;
+
+# WHERE子句的位置:
+在同时使用ORDER BY和WHERE子句时，应该让ORDER BY位于WHERE之后，否则将会产生错误
+
+检查WHERE prod_name=‘fuses’语句，它返回prod_name的值为Fuses的一行。MySQL在执行匹配时默认不区分大小写，所以fuses与Fuses匹配。
+</code></pre><h3 id="模糊查询-like">模糊查询 like</h3><pre><code class="language-mysql">#LIKE指示MySQL后跟的搜索模式利用通配符匹配而不是直接相等匹配进行比较,在匹配时默认是不区分大小写的,但是可以设置
+
+# 通配符
+% 表示 0 个,1 个或多个任意字符，不能匹配null
+_ 表示匹配 1 个任意字符
+
+select * from students where name like '黄%' or name like '%靖';
+select * from students where name like '黄_';
+
+通配符搜索的处理一般要比前其他搜索所花时间更长,
+使用通配符的技巧:
+	不要过度使用通配符。如果其他操作符能达到相同的目的，应该使用其他操作符
+	在确实需要使用通配符时，除非绝对有必要，否则不要把它们用在搜索模式的开始处。把通配符置于搜索模式的开始处，搜索起来是最慢的。
+	仔细注意通配符的位置。如果放错地方，可能不会返回想要的数据
+</code></pre><h3 id="正则搜索-regexp">正则搜索 regexp</h3><pre><code class="language-mysql">^		文本以...开头
+$		文本以...结尾
+[[:&lt;:]]	 词的开头
+[[:&gt;:]]	 词的结尾
+
+.		表示匹配任意一个字符
+* 		0个或多个匹配
++ 		一个或多个匹配
+?		0个或1个匹配
+{n}		指定数目的匹配
+{n,}	不少于指定数目的匹配
+{n,m}	匹配数目的范围,m&lt;=255
+
+|		或, 表示匹配其中之一
+[]		匹配特定的字符,如[123]只匹配 1,2,3;[0-9];[a-z]
+[^..]	匹配除特定字符之外的字符,如[^123]匹配除 1,2,3之外的符号
+\\		对特殊字符转义,如\\. 匹配.符号;为了匹配反斜杠（\）字符本身，需要使用\\\
+
+select prod_name, prod_price from products where prod_name regexp "\\([0-9] sticks?\\)";
+select prod_name, prod_price from products where prod_name regexp "[[:digit:]]{4}";
+select prod_name, prod_price from products where prod_name regexp "1000|2000";
+select prod_name, prod_price from products where prod_name regexp "[123] Ton";
+
+字符类:
+[:alnum:]	任意字母和数字,同[a-zA-Z0-9]
+[:alpha:]	任意字符,同[a-zA-Z]
+[:blank:]	空格和制表	
+[:cntrl:]	ascii控制字符
+[:digit:]	[0-9]
+[:graph:]	任意可打印字符,不包括空格
+[:print:]	任意可打印字符
+[:lower:]	[a-z]
+[:punct:]	非字母数字和ascii控制字符的任意字符
+[:space:]	包括空格在内的任意空白字符
+[:upper:]	[A-Z]
+[:xdigit:]	任意十六进制数字[a-fA-F0-9]
+
+# like 与 regexp的区别:
+LIKE匹配整个列。如果被匹配的文本在列值中出现，LIKE将不会找到它，相应的行也不被返回（除非使用通配符）。
+REGEXP在列值内进行匹配，如果被匹配的文本在列值中出现，REGEXP将会找到它，相应的行将被返回;利用定位符，通过用^开始每个表达式，用$结束每个表达式，可以使REGEXP的作用与LIKE一样。
+# 匹配prod_name中含有1000的数据
+select prod_name, prod_price from products where prod_name regexp "1000";
+# 匹配prod_name名为1000的数据
+select prod_name, prod_price from products where prod_name like "1000";
+
+# MySQL中的正则表达式匹配(自版本3.23.4后)不区分大小写（即，大写和小写都匹配）
+为区分大小写，可使用 BINARY 关键字
+select prod_name, prod_price from products WHERE prod_name REGEXP BINARY 'JetPack .000'。
+</code></pre><h3 id="范围查询--in--between">范围查询 in / between</h3><pre><code class="language-mysql"># 范围查询
+# between .. and .. 表示在一个连续的范围内查询,BETWEEN匹配范围中所有的值，包括指定的开始值和结束值。
+# in 表示在一个非连续的范围内查询
+
+select prod_name, prod_price from products where prod_price between 5 and 10;
+select * from students where (not id between 3 and 8) and gender='男';
+
+select name, price from products where id in (1002, 1003) order by name desc;
+select name, price from products where id = 1002 or id = 1003 order by name desc;  # 两句等效,但是in执行更快,此外in还可以包含其他select子句
+</code></pre><h3 id="空判断查询-is-not-null">空判断查询 is (not) null</h3><pre><code class="language-mysql">NULL 无值（no value），它与字段包含0、空字符串或仅仅包含空格不同。
+
+# 判断为空使用: is null
+# 判断非空使用: is not null
+
+select * from students where height is null;
+</code></pre><h3 id="排序查询-order-by">排序查询 order by</h3><pre><code class="language-mysql">select * from 表名 order by 列1 asc|desc [,列2 asc|desc,...]      ----ascending,上升的
+# 语法说明:
+# 先按照列1进行排序，如果列1的值相同时，则按照 列2 排序，以此类推
+# asc从小到大排列，即升序; desc从大到小排序，即降序
+# 默认按照列值从小到大排列（即asc关键字）
+
+select * from students where gender=1 and is_delete=0 order by id desc;
+
+# 通常，ORDER BY子句中使用的列将是为显示所选择的列。但是，实际上并不一定要这样，用非检索的列排序数据是完全合法的
+select id, name from students where gender=1 and is_delete=0 order by age desc;
+
+# ORDER BY子句的位置 
+在给出ORDER BY子句时，应该保证它位于FROM子句之后。如果使用LIMIT，它必须位于ORDER BY之后。使用子句的次序不对将产生错误消息
+</code></pre><h3 id="分页查询-limit">分页查询 limit</h3><pre><code class="language-mysql">select * from 表名 limit start_, num
+# 说明:
+# limit是分页查询关键字
+# start_偏移量, 表示开始行索引，不写的话默认是0
+# num 表示查询条数
+
+select * from 表名 limit num offset start_
+# 效果同上
+
+LIMIT 中指定要检索的行数为检索的最大行数。如果没有足够的行（例如，给出LIMIT 10, 5，但只有13行）, MySQL将只返回它能返回的那么多行。
+
+# 查询前3行男生信息:
+select * from students where gender=1 limit 0,3;  也可以写成
+select * from students where gender=1 limit 3  默认从0开始查询
+
+# 案例:使用order by和limit找出一个列中的最大/最小值
+select price from products order by price desc limit 1;
+</code></pre><h3 id="拼接字段-concat">拼接字段 concat</h3><pre><code class="language-mysql"># Concat()拼接串，即把多个串连接起来形成一个较长的串。Concat()需要一个或多个指定的串，各个串之间用逗号分隔
+
+# 将字段组成 vend_name(vend_country) 的形式返回
+select concat(vend_name, "(", vend_country, ")") from vendors order by vend_name;
+</code></pre><h3 id="创建计算字段">创建计算字段</h3><pre><code class="language-mysql">基本算术操作符 + - * /
+
+# 将quantity*item_price计算之后也作为一个字段返回
+select prod_id, quantity, item_price, quantity*item_price as total_price from orderitems where order_num = 20005;
+</code></pre><h3 id="文本处理函数">文本处理函数</h3><pre><code class="language-mysql">Left()		返回串左边的字符
+Right()		返回串右边的字符
+Length()	返回串的长度
+Locate()	找出串的一个子串
+Lower()		将串转换为小写
+Upper()		将串转换为大写
+LTrim()		去掉串左边的空格
+RTrim()		去掉串右边的空格
+Trim()		去掉串左右两边的空格
+Soundex()	返回串的soundex值
+SubString()	返回子串的字符
+# 说明:SOUNDEX是一个将任何文本串转换为描述其语音表示的字母数字模式的算法
+# soundex使用场景:假如数据库有一个名字叫Y.Lee,但是查询的时候输入的是Y.Lie
+通常情况下:
+select cust_name, cust_contact from customers where cust_contact = "Y.Lie";   # 无返回值
+使用soundex:
+select cust_name, cust_contact from customers where soundex(cust_contact) = soundex("Y.Lie"); # 它匹配所有发音类似于Y.Lie的联系名
+
+# 删除数据两侧多余的空格来整理数据
+select concat(rtrim(vend_name), "(", rtrim(vend_country), ")") from vendors order by vend_name;
+select concat(rtrim(vend_name), "(", rtrim(vend_country), ")") as title from vendors order by vend_name;
+
+select vend_name, upper(vend_name) as vend_name2 from vendors order by vend_name;
+</code></pre><h3 id="日期和时间处理函数">日期和时间处理函数</h3><pre><code class="language-mysql"># 指定一个日期，不管是插入或更新表值还是用WHERE子句进行过滤，日期必须为格式yyyy-mm-dd
+
+日期和时间采用相应的数据类型和特殊的格式存储，以便能快速和有效地排序或过滤，并且节省物理存储空间
+AddDate()		增加一个日期(天,周等)
+AddTime()		增加一个时间(时分秒)
+CurDate()		返回当前日期
+CurTime()		返回当前时间
+Date()			返回日期时间的日期部分
+DateDiff()		计算两个日期之差
+Date_Add()		高度灵活的日期运算函数
+Date_Format()	返回一个格式化的日期或时间串
+Day()			返回一个日期的天数部分
+DayOfWeek()		对于一个日期,返回对应的星期几
+Hour()			返回一个时间的小时部分
+Minute()		返回一个时间的分钟部分
+Month()			返回一个日期的月份部分
+Now()			返回当前时间和日期
+Second()		返回一个时间的秒部分
+Time()			返回一个日期时间的时间部分
+Year()			返回一个日期的年份部分
+
+select cust_id, order_num from orders where order_date = "2005-09-01";
+select cust_id, order_num from orders where Date(order_date) = "2005-09-01";
+
+# 如果要检索九月份的所有订单
+select cust_id, order_num from orders where Date(order_date) between "2005-09-01" and "2005-09-30";
+select cust_id, order_num from orders where Year(order_date) = 2005 and Month(order_date) = 9;
+</code></pre><h3 id="数值处理函数">数值处理函数</h3><pre><code class="language-MySQL"># 数值处理函数仅处理数值数据。这些函数一般主要用于代数、三角或几何运算
+Abs()		绝对值
+Cos()		余弦函数
+Sin()		正弦函数
+Tan()		正切函数
+Exp()		指数值
+Mod()		取余运算,求模运算
+Pi()		返回圆周率
+Rand()		返回一个随机数
+Sqrt()		返回一个数的平方根
+</code></pre><h3 id="聚合函数">聚合函数</h3><pre><code class="language-mysql">聚合函数又叫组函数，通常是对表中的数据进行统计和计算，一般结合分组(group by)来使用，用于统计和计算分组数据。
+max()		表示求指定列的最大值
+min()		表示求指定列的最小值
+sum()		表示求指定列的和
+avg()		表示求指定列的平均值
+count()		表示求指定列的总行数
+
+AVG()函数忽略列值为NULL的行
+-- 求男生的平均身高, 包含身高是null的
+select avg(ifnull(height,0)) from students where gender = 1;  # ifnull函数: 表示判断指定字段的值是否为null，如果为空使用自己提供的值。
+
+使用COUNT(*)对表中行的数目进行计数，不管表列中包含的是空值（NULL）还是非空值
+使用COUNT(column)对特定列中具有值的行进行计数，忽略NULL值
+select count(*) as num_cust from customers;  # 返回5
+select count(cust_email) as num_cust from customers; # 返回3,表示5个人中有三个不是null
+
+对非数值数据使用MAX() 虽然MAX()一般用来找出最大的数值或日期值，但MySQL允许将它用来返回任意列中的最大值，包括返回文本列中的最大值。在用于文本数据时，如果数据按相应的列排序，则MAX()返回最后一行。
+MAX()函数忽略列值为NULL的行
+
+对非数值数据使用MIN() MIN()函数与MAX()函数类似，MySQL允许将它用来返回任意列中的最小值，包括返回文本列中的最小值。在用于文本数据时，如果数据按相应的列排序，则MIN()返回最前面的行
+MIN()函数忽略列值为NULL的行
+
+# SUM()可以用来合计计算值
+SUM()函数忽略列值为NULL的行
+select sum(item_price * quantity) as total_price from orderitems where order_num = 20005;
+
+
+以上五个聚合函数在默认情况都使用了 all 参数进行聚合统计,all表示对所有的行执行计算
+但是在一些情况下,也可以用 distinct进行去重统计
+select avg(distinct prod_price) as avg_price from products where vend_id = 1003; # 价格一样的只统计一次
+
+注意 如果指定列名，则 DISTINCT只能用于 COUNT()。 DISTINCT不能用于 COUNT(*)，因此不允许使用 COUNT（ DISTINCT），否则会产生错误。类似地， DISTINCT必须使用列名，不能用于计算或表达式
+</code></pre><h3 id="分组查询-group-by">分组查询 group by</h3><pre><code class="language-mysql">分组查询就是将查询结果按照指定字段进行分组，字段中数据相等的分为一组。通过把数据分为多个逻辑组，以便能对每个组进行聚集计算
+
+# 分组查询基本的语法格式如下：
+GROUP BY 列名 [WITH ROLLUP]/[with cube] [HAVING 条件表达式]  # 默认会排序
+说明:
+    列名: 是指按照指定字段的值进行分组。
+    HAVING 条件表达式: 用来过滤分组后的数据。
+    WITH ROLLUP：在所有记录的最后加上一条记录，显示 select查询时聚合函数的统计和计算结果;生成的结果集显示了所选列中值的某一层次结构的聚合(只返回 group by中第一个分组字段的所有统计组合)
+    with cube: 生成的结果集显示了所选列中值的所有组合的聚合,即 group by之后字段的所有组合
+
+# 在具体使用 GROUP BY子句前，需要知道一些重要的规定:
+	GROUP BY子句可以包含任意数目的列。这使得能对分组进行嵌套，为数据分组提供更细致的控制
+	如果在 GROUP BY子句中嵌套了分组，数据将在最后规定的分组上进行汇总。换句话说，在建立分组时，指定的所有列都一起计算（所以不能从个别的列取回数据）
+	GROUP BY子句中列出的每个列都必须是检索列或有效的表达式（但不能是聚集函数）。如果在 SELECT中使用表达式，则必须在 GROUP BY子句中指定相同的表达式。不能使用别名
+	除聚集计算语句外， SELECT语句中的每个列都必须在 GROUP BY子句中给出
+	如果分组列中具有 NULL 值，则 NULL将作为一个分组返回。如果列中有多行 NULL值，它们将分为一组
+	GROUP BY子句必须出现在 WHERE子句之后， ORDER BY子句之前
+
+select name, gender from students group by name, gender;# 根据name和gender字段进行分组
+
+# group by + group_concat()的使用
+# group_concat(字段名): 统计每个分组指定字段的信息集合，每个信息之间使用逗号进行分割
+select gender,group_concat(name) from students group by gender;# 根据gender字段进行分组， 查询gender字段和分组的name字段信息
+
+# group by + 聚合函数的使用
+select gender,avg(age) from students group by gender; # 统计不同性别的人的平均年龄
+
+# group by + having的使用
+select gender,count(*) from students group by gender having count(*)&gt;2;
+select cust_id, count(*) as orders from orders group by cust_id having count(*) &gt;=2;
+
+# HAVING和WHERE的差别
+- having作用和where类似都是过滤数据的，但having是过滤分组数据的，只能用于 group by
+- HAVING支持所有 WHERE操作符,包括通配符条件和带多个操作符的子句,它们的句法是相同的，只是关键字有差别
+- WHERE在数据分组前进行过滤，HAVING在数据分组后进行过滤。这是一个重要的区别，WHERE排除的行不包括在分组中。这可能会改变计算值，从而影响HAVING子句中基于这些值过滤掉的分组。
+select vend_id ,count(*) as num_prods from products where prod_price &gt;= 10 group by vend_id with rollup having count(*) &gt;=2;
+
+# group by + with rollup/cube 的使用
+# with rollup的作用是：在最后记录后面新增一行，显示select查询时聚合函数的统计和计算结果
+select gender,group_concat(age) from students group by gender with rollup;# 根据gender字段进行分组，汇总所有人的年龄
+
+    
+# 分组和排序的区别
+- order by: 排序产生的输出,任意列都可以使用(甚至非选择的列也可以使用),不一定需要
+- group by: 分组行,但输出可能不是分组的顺序;只可能使用选择列或表达式列,而且必须使用每个选择列表达式;如果与聚合函数一起使用列(或表达式)则必须使用
+select order_num, sum(quantity*item_price) as ordertotal from orderitems group by order_num having sum(quantity*item_price) &gt;=50 order by ordertotal desc; 
+</code></pre><h3 id="连接查询">连接查询</h3><pre><code class="language-mysql">如果数据存储在多个表中，怎样用单条SELECT语句检索出数据？
+答案是使用联结。简单地说，联结是一种机制，用来在一条SELECT语句中关联表，因此称之为联结。使用特殊的语法，可以联结多个表返回一组输出;联结不是物理实体,换句话说，它在实际的数据库表中不存在。联结由MySQL根据需要建立，它存在于查询的执行当中。
+
+select vend_name, prod_name, prod_price from vendors, products where vendors.vend_id = products.vend_id order by vend_name, prod_name;
+#说明:
+"SELECT语句指定的两个列（prod_name和prod_price）在一个表中,而另一个列（vend_name）在另一个表中;
+FROM子句列出了两个表，分别是vendors和products。它们就是这条SELECT语句联结的两个表的名字
+这两个表用WHERE子句正确联结，WHERE子句指示MySQL匹配vendors表中的vend_id和products表中的vend_id"
+
+#笛卡儿积（cartesian product） 
+由没有联结条件的表关系返回的结果为笛卡儿积。检索出的行的数目将是第一个表中的行数乘以第二个表中的行数。
+select vend_name, prod_name, prod_price from vendors, products order by vend_name, prod_name;
+
+# 内连接
+查询两个表中符合条件的共有记录  # 交集
+select 字段 from 表1 inner join 表2 on 表1.字段1 = 表2.字段2
+说明:
+inner join 就是内连接查询关键字
+on 就是连接查询条件
+
+select * from students as s inner join classes as c on s.cls_id = c.id;
+
+select prod_name, prod_price, vend_name from vendors inner join products on vendors.vend_id = products.vend_id order by vend_name, prod_name;  # 与上边的等效
+
+select prod_name, vend_name, prod_price, quantity from orderitems, products, vendors where products.vend_id = vendors.vend_id and orderitems.prod_id = products.prod_id and order_num = 20005;
+
+# 左连接
+左连接查询：以左表为主根据条件查询右表数据，如果根据条件查询右表数据不存在使用null值填充
+select 字段 from 表左 left join 表右 on 表左.字段1 = 表右.字段2
+
+select * from students as s left join classes as c on s.cls_id = c.id;
+
+# 右连接
+右连接查询：以右表为主根据条件查询左表数据，如果根据条件查询左表数据不存在使用null值填充
+select 字段 from 表左 right join 表右 on 表左.字段1 = 表右.字段2
+
+select * from students as s right join classes as c on s.cls_id = c.id;
+
+# 自连接
+自连接是特殊的内连接，左表和右表是同一个表，根据连接查询条件查询两个表中的数据。
+select c.id, c.title, c.pid, p.title from areas as c inner join areas as p on c.pid = p.id where p.title = '山西省';
+
+# 性能考虑 
+MySQL在运行时关联指定的每个表以处理联结。这种处理可能是非常耗费资源的，因此应该仔细，不要联结不必要的表。联结的表越多，性能下降越厉害。
+</code></pre><h3 id="组合查询">组合查询</h3><p>MySQL也允许执行多个查询（多条SELECT语句），并将结果作为单个查询结果集返回。这些组合查询通常称为并（union）或复合查询（compound query）</p><pre><code class="language-mysql"># 可用UNION操作符来组合数条SQL查询
+select vend_id, prod_id, prod_price from products where prod_price &lt;= 5 union select vend_id, prod_id, prod_price from products where vend_id in (1001,1002);
+UNION指示MySQL执行两条SELECT语句，并把输出组合成单个查询结果集。
+
+union规则：
+    UNION中的每个查询必须包含相同的列、表达式或聚集函数（不过各个列不需要以相同的次序列出）。
+    列数据类型必须兼容：类型不必完全相同，但必须是DBMS可以隐含地转换的类型（例如，不同的数值类型或不同的日期类型）
+    
+UNION从查询结果集中自动去除了重复的行，这是UNION的默认行为。如果想返回包含重复行的匹配行，可使用 UNION ALL
+select vend_id, prod_id, prod_price from products where prod_price &lt;= 5 union all select vend_id, prod_id, prod_price from products where vend_id in (1001,1002);
+
+当使用 order by对 union查询进行排序的时候，将 order by 放到最后即可，MySQL将用它来排序所有SELECT语句返回的所有结果，而不是认位只对最后一句select进行排序
+</code></pre><h3 id="子查询">子查询</h3><pre><code class="language-mysql">在一个 select 语句中,嵌入了另外一个 select 语句, 那么被嵌入的 select 语句称之为子查询语句，外部那个select语句则称为主查询.
+
+主查询和子查询的关系:
+子查询是嵌入到主查询中
+子查询是辅助主查询的,要么充当条件,要么充当数据源
+子查询是可以独立存在的语句,是一条完整的 select 语句
+
+在 WHERE子句中使用子查询能够编写出功能很强并且很灵活的SQL语句。对于能嵌套的子查询的数目没有限制，不过在实际使用时由于性能的限制，不能嵌套太多的子查询。
+
+# 查找年龄最大,身高最高的学生:
+select * from students where (age, height) =  (select max(age), max(height) from students);
+
+# 多层嵌套子查询
+select cust_name, cust_contact from customers where cust_id in (
+	select cust_id from orders where order_num in (
+    	select order_num from orderitems where prod_id = "TNT2"));  # 多层嵌套子查询
+
+# 作为计算字段使用子查询
+显示customers表中每个客户的订单总数。订单与相应的客户ID存储在orders表中
+select cust_name, cust_state, (
+    select count(*) from orders where orders.cust_id = customers.cust_id) as orders
+from customers order by cust_name; 
+</code></pre><h3 id="将查询结果插入其它表中">将查询结果插入其它表中</h3><pre><code class="language-mysql">insert into .. select .. 表示: 把查询结果插入到指定表中，也就是表复制。
+
+-- 查询goods表中商品的分类信息
+select cate_name from goods group by cate_name;
+
+-- 将查询结果插入到good_cates表中
+insert into good_cates(name) select cate_name from goods group by cate_name;
+
+-- 添加移动设备分类信息
+insert into good_cates(name) values('移动设备');
+</code></pre></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/'>数据库</a>, <a href='/categories/mysql/'>MySQL</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/mysql/" class="post-tag no-text-decoration" >MySQL</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=MySQL基础-常用SQL语句 - 图样图森破&url=https://justzxy.cn/posts/mysql-2/" data-toggle="tooltip" data-placement="top" title="Twitter" target="_blank" rel="noopener" aria-label="Twitter"> <i class="fa-fw fab fa-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=MySQL基础-常用SQL语句 - 图样图森破&u=https://justzxy.cn/posts/mysql-2/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://telegram.me/share?text=MySQL基础-常用SQL语句 - 图样图森破&url=https://justzxy.cn/posts/mysql-2/" data-toggle="tooltip" data-placement="top" title="Telegram" target="_blank" rel="noopener" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <i class="fa-fw fas fa-link small" onclick="copyLink()" data-toggle="tooltip" data-placement="top" title="Copy link"></i> </span></div></div></div></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted topbar-down"><div class="access"><div id="access-lastmod" class="post"> <span>Recent Update</span><ul class="post-content pl-0 pb-1 ml-1 mt-2"><li><a href="/posts/js/">JavaScript基础整理</a><li><a href="/posts/http-code/">HTTP 响应码</a><li><a href="/posts/pip/">python包管理工具pip</a><li><a href="/posts/pyecharts-pie/">pyecharts饼图使用笔记</a><li><a href="/posts/redis-fast/">Redis为什么这么快</a></ul></div><div id="access-tags"> <span>Trending Tags</span><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/python%E6%A0%87%E5%87%86%E5%BA%93/">Python标准库</a> <a class="post-tag" href="/tags/web%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/">Web开发技术</a> <a class="post-tag" href="/tags/python%E8%BF%9B%E9%98%B6/">Python进阶</a> <a class="post-tag" href="/tags/mysql/">MySQL</a> <a class="post-tag" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a> <a class="post-tag" href="/tags/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">环境配置</a> <a class="post-tag" href="/tags/django/">Django</a> <a class="post-tag" href="/tags/linux/">Linux</a> <a class="post-tag" href="/tags/python%E5%9F%BA%E7%A1%80/">Python基础</a> <a class="post-tag" href="/tags/redis/">Redis</a></div></div></div><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.js"></script><div id="toc-wrapper" class="pl-0 pr-4 mb-5"> <span class="pl-3 pt-2 mb-2">Contents</span><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="post-extend-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="related-posts" class="mt-5 mb-2 mb-sm-4"><h3 class="pt-2 mt-1 mb-4 ml-1" data-toc-skip>Further Reading</h3><div class="card-deck mb-4"><div class="card"> <a href="/posts/mysql-1/"><div class="card-body"> <span class="timeago small" > Mar 18, 2018 <i class="unloaded">2018-03-18T22:26:21+08:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>MySQL基础-数据类型及约束</h3><div class="text-muted small"><p> 介绍 MySQL是一个关系型数据库管理系统，在 WEB 应用方面，MySQL是最好的 RDBMS (Relational Database Management System，关系数据库管理系统) 应用软件，它是由瑞典MySQL AB 公司开发，目前属于 Oracle 旗下产品，MySQL 是最流行的关系型数据库管理系统中的一个。 默认端口号：3306 MySQL的特点: 是开...</p></div></div></a></div><div class="card"> <a href="/posts/mysql-3/"><div class="card-body"> <span class="timeago small" > Mar 24, 2018 <i class="unloaded">2018-03-24T22:17:46+08:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>MySQL基础-查询优化\三范式\python交互</h3><div class="text-muted small"><p> SQL查询优化 避免全表扫描，应考虑在 where 及 order by 涉及的列上建立索引； 查询时使用select明确指明所要查询的字段，避免使用select *的操作； SQL语句尽量大写，如 1 SELECT name FROM t WHERE id=1 对于小写的sql语句，通常数据库在...</p></div></div></a></div><div class="card"> <a href="/posts/mysql-4/"><div class="card-body"> <span class="timeago small" > Mar 27, 2018 <i class="unloaded">2018-03-27T21:55:17+08:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>MySQL基础-事务</h3><div class="text-muted small"><p> 事务的概念 事务是一个不可分割的数据库操作序列，也是数据库并发控制的基本单位，其执行的结果必须使数据库从一种一致性状态变到另一种一致性状态。事务就是用户定义的一系列执行SQL语句的操作, 这些操作要么完全地执行，要么完全地都不执行， 它是一个不可分割的工作执行单元。 事务的四大特性 原子性(Atomicity) 一致性(Consistency) 隔离性(Isolation...</p></div></div></a></div></div></div><div class="post-navigation d-flex justify-content-between"> <a href="/posts/mysql-1/" class="btn btn-outline-primary" prompt="Older"><p>MySQL基础-数据类型及约束</p></a> <a href="/posts/mysql-3/" class="btn btn-outline-primary" prompt="Newer"><p>MySQL基础-查询优化\三范式\python交互</p></a></div></div></div></div><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center"><div class="footer-left"><p class="mb-0"> © 2021 tooYoungtooSimple. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> theme.</p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-sm-11 post-content"><div id="search-hints"><h4 class="text-muted mb-4">Trending Tags</h4><a class="post-tag" href="/tags/python%E6%A0%87%E5%87%86%E5%BA%93/">Python标准库</a> <a class="post-tag" href="/tags/web%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/">Web开发技术</a> <a class="post-tag" href="/tags/python%E8%BF%9B%E9%98%B6/">Python进阶</a> <a class="post-tag" href="/tags/mysql/">MySQL</a> <a class="post-tag" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a> <a class="post-tag" href="/tags/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">环境配置</a> <a class="post-tag" href="/tags/django/">Django</a> <a class="post-tag" href="/tags/linux/">Linux</a> <a class="post-tag" href="/tags/python%E5%9F%BA%E7%A1%80/">Python基础</a> <a class="post-tag" href="/tags/redis/">Redis</a></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.7.3/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="https://justzxy.cn{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); </script> <script async src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.15.0,npm/bootstrap@4/dist/js/bootstrap.min.js"></script> <script defer src="/app.js"></script> <script defer src="https://www.googletagmanager.com/gtag/js?id="></script> <script> document.addEventListener("DOMContentLoaded", function(event) { window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', ''); }); </script> <script src="https://cdn.jsdelivr.net/combine/npm/lozad/dist/lozad.min.js,npm/magnific-popup@1/dist/jquery.magnific-popup.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script>
