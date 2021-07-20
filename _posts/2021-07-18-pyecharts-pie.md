@@ -1,6 +1,6 @@
 ---
 title: pyecharts饼图使用笔记
-date: 2021-07-18 18:57:32 +0800
+date: 2021-07-18 18:58:32 +0800
 categories: [数据可视化]
 tags: [数据可视化, pyecharts]
 ---

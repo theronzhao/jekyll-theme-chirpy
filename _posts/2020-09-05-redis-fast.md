@@ -1,11 +1,9 @@
 ---
 title: Redis为什么这么快
-date: 2020-09-05 13:57:32 +0800
+date: 2020-09-05 14:57:32 +0800
 categories: [数据库, Redis]
 tags: [Redis]
 ---
-
-来源：https://mp.weixin.qq.com/s/BFtMacHdk1_ThbLP0vgVPg
 
 ![](/refer/redis-1.png)
 
@@ -309,3 +307,11 @@ Redis 中使用了 Reactor 单线程模型，你可能对它并不熟悉。没�
 
 - I/O 多路复用模型同时监听客户端连接；
 - 单线程在执行过程中不需要进行上下文切换，减少了耗时。
+
+
+
+
+
+
+
+来源：https://mp.weixin.qq.com/s/BFtMacHdk1_ThbLP0vgVPg
